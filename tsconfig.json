@@ -13,6 +13,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "resolveJsonModule": true,
+    "rootDir": "src",
     "outDir": "./dist",
     "baseUrl": "./src",
   },
