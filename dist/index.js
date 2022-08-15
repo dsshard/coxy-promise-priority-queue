@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.promisePriorityQueue = void 0;
 const queue_1 = require("@coxy/queue");
-function promisePriorityQueue(concurrency = 1) {
+function promisePriorityQueue(concurrency = 1, defaultPriority = 0) {
     if (Number(concurrency) <= 0) {
         throw new TypeError('Expected `concurrency` to be a number from 1 and up');
     }
@@ -39,8 +39,8 @@ function promisePriorityQueue(concurrency = 1) {
         })();
     };
     return {
-        add: (fn, priority = 0) => new Promise((resolve) => {
-            enqueue(fn, priority, resolve);
+        add: (fn, priority) => new Promise((resolve) => {
+            enqueue(fn, priority || defaultPriority, resolve);
         }),
         get active() {
             return activeCount;

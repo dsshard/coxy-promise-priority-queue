@@ -1,6 +1,6 @@
 import { PriorityQueue } from '@coxy/queue'
 
-export function promisePriorityQueue (concurrency = 1) {
+export function promisePriorityQueue (concurrency = 1, defaultPriority = 0) {
   if (Number(concurrency) <= 0) {
     throw new TypeError('Expected `concurrency` to be a number from 1 and up')
   }
@@ -45,22 +45,22 @@ export function promisePriorityQueue (concurrency = 1) {
   }
 
   return {
-    add: (fn, priority = 0) => new Promise((resolve) => {
-      enqueue(fn, priority, resolve)
+    add: <T>(fn, priority?: number): Promise<T> => new Promise((resolve) => {
+      enqueue(fn, priority || defaultPriority, resolve)
     }),
-    get active () {
+    get active (): number {
       return activeCount
     },
-    get pending () {
+    get pending (): number {
       return queue.size
     },
-    clear: () => {
+    clear: (): void => {
       queue.clear()
     },
-    pause: () => {
+    pause: (): void => {
       pause = true
     },
-    resume: () => {
+    resume: (): void => {
       pause = false
       next()
     }
