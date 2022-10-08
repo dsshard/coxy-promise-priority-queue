@@ -25,10 +25,10 @@
     eslint-config-next ">=12"
     eslint-plugin-react ">=7"
 
-"@coxy/queue@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@coxy/queue/-/queue-1.0.5.tgz#ef788cfb5a289325384dd1df2589e01db569b7cd"
-  integrity sha512-MnZleaONwv0JAYFIFNK91xwDLQdSKlPoYAJ6D3Ac+hgEoZ/3b8COCEVE9RHRZosS1DJd+v1mGDmqhLmv5ZYvdg==
+"@coxy/queue@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@coxy/queue/-/queue-1.0.6.tgz#42b425ffe4269328440476955593dccb1ec7ffdc"
+  integrity sha512-C6oXb86yYSCSoazBPFTiNx32T+6aGUjOPTcPr/+EyMz1zNB0/U7B4nhKy4jvG7NZPx7uTur8gKiMhB24mHqtGg==
 
 "@eslint/eslintrc@^1.3.3":
   version "1.3.3"
