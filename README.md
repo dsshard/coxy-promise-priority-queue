@@ -1,74 +1,115 @@
-# Promise priority queue
+# Promise Priority Queue
 
-**Install**
+A lightweight, concurrency-controlled, **priority-based** task queue for Promises.
 
-```shell
+---
+
+## ✨ Install
+
+```bash
 npm install @coxy/promise-priority-queue
 ```
 
-**Create**
+---
 
-```javascript
+## 📦 Import
+
+ESM:
+
+```typescript
 import { promisePriorityQueue } from '@coxy/promise-priority-queue';
 ```
 
-... or using CommonJS syntax:
+CommonJS:
 
 ```javascript
 const { promisePriorityQueue } = require('@coxy/promise-priority-queue');
 ```
 
+---
+
+## 🚀 Usage
+
 ```typescript
-const timer = (time: number) => new Promise((resolve) => setTimeout(resolve, time))
+const timer = (time: number) => new Promise((resolve) => setTimeout(resolve, time));
 
-const limit = promisePriorityQueue(2)
+const queue = promisePriorityQueue(2); // concurrency limit = 2
 
-void limit.add(async () => {
-  await timer(3000)
-  console.log('timer 3000')
-}, 10)
+void queue.add(async () => {
+  await timer(3000);
+  console.log('timer 3000');
+}, 10); // priority 10
 
-void limit.add(async () => {
-  await timer(1000)
-  console.log('timer 1000 - 1')
-}, 2)
+void queue.add(async () => {
+  await timer(1000);
+  console.log('timer 1000 - 1');
+}, 2); // priority 2
 
-void limit.add(async () => {
-  await timer(1000)
-  console.log('timer 1000 - 2')
-}, 0)
+void queue.add(async () => {
+  await timer(1000);
+  console.log('timer 1000 - 2');
+}, 0); // priority 0
 
-setTimeout(limit.pause, 500)
-setTimeout(limit.resume, 5000)
-
-
+// Control queue
+setTimeout(queue.pause, 500);   // pause queue after 0.5 seconds
+setTimeout(queue.resume, 5000); // resume queue after 5 seconds
 ```
 
-`promisePriorityQueue(concurrency: number)`
+## 🔗 Example Output
 
-Create limiter object. concurrency default is 1
+```text
+timer 1000 - 2
+timer 1000 - 1
+timer 3000
+```
+---
 
-`instance.add(fn, priority?: number)`
+## 📖 API
 
-Add task to priority queue. Default priority - 0, the fewer themes, the higher the priority
+### `promisePriorityQueue(concurrency?: number): QueueInstance`
+Creates a new priority queue.
 
-`instance.active`
+- `concurrency` — (optional) maximum number of concurrently running promises. Defaults to `1`.
 
-The number of promises that are currently running.
+### QueueInstance methods:
 
-`instance.pending`
+| Method               | Description                                                                                                                                                                     |
+|----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `add(fn, priority?)` | Add an async task to the queue.<br/> - `fn`: an async function returning a Promise.<br/> - `priority`: optional number, default is `0`. Lower numbers mean **higher priority**. |
+| `pause()`            | Pauses the execution of new tasks. Running tasks continue.                                                                                                                      |
+| `resume()`           | Resumes the queue if it was paused.                                                                                                                                             |
+| `clear()`            | Discards all **pending** (waiting) tasks. Running tasks are unaffected.                                                                                                         |
+| `active: number`     | Number of currently running tasks.                                                                                                                                              |
+| `pending: number`    | Number of queued (waiting) tasks.                                                                                                                                               |
 
-The number of promises that are waiting to run (i.e. their internal fn was not called yet).
+---
 
-`instance.clear()`
+## 🛠 Priority System
 
-Discard pending promises that are waiting to run.
+- Tasks are sorted by priority:  
+  **lower numbers** → **higher priority**.
+- Tasks with the same priority are handled in **FIFO** (first-in, first-out) order.
+- The queue respects the concurrency limit at all times.
 
-`instance.pause()`
+---
 
-Pause queue
+_(depending on timing and pauses)_
 
-`instance.resume()`
+---
 
-Resume queue
+## 🔗 Notes
+
+- `pause()` prevents new tasks from starting but does not interrupt currently running tasks.
+- `clear()` affects only pending tasks.
+- All methods are safe to call multiple times.
+
+---
+
+## 🖊️ License
+
+MIT License.
+
+---
+
+> 🔹 **Fun Fact**: The first real-world use of a "priority queue" concept dates back to early air traffic control systems, where urgent landing requests needed to "jump the queue"!
 
